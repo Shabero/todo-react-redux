@@ -29,21 +29,22 @@ const App = () => {
     }
 
     return (
-        <div>
-            <input type="text"
-                   value={todo.title || ''}
-                   onChange={(e) => setTodo({...todo, title: e.target.value})}
-            />
-            <button
-                onClick ={handleAddTodos}
-            >Add</button>
+        <div className={'container d-flex flex-column pt-5 mt-5'}>
+            <div>
+                <input type="text"
+                       value={todo.title || ''}
+                       onChange={(e) => setTodo({...todo, title: e.target.value})}
+                       className={''}
+                />
+                <button className={'btn btn-primary'} onClick ={handleAddTodos}>Add</button>
+            </div>
             {
                 todosArray?.map(todo =>
                     <div key={todo.id} style={{display: 'flex', gap:'10px', alignItems: 'center' }}>
                         <h1>{todo.title}</h1>
                         <input type="checkbox" checked={todo.completed}/>
-                        <button onClick={() => handleDelete(todo.id)}>Delete</button>
-                        <button onClick={() => handleEdit()}>Edit</button>
+                        <button onClick={() => handleDelete(todo.id)} className={'btn btn-danger'}>Delete</button>
+                        <button onClick={() => handleEdit()} className={'btn btn-warning'}>Edit</button>
                     </div>
                 )
             }
