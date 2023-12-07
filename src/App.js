@@ -1,50 +1,51 @@
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
 import {addTodo, deleteTodo, editTodo, getTodos} from "./redux/action/todoAction";
+import Edit from "./Components/Edit";
 
-const App = () => {
-    const dispatch = useDispatch();
-    const [todo, setTodo] = useState({});
-    const todosArray = useSelector(state => state.todos);
-    const edit = useSelector(state => state.todos)
-
+function App() {
+    const dispatch = useDispatch()
+    const [todo, setTodo] = useState({})
+    const todoArray = useSelector(state => state.todos)
 
     useEffect(() => {
         dispatch(getTodos(todos))
     }, []);
 
-    const handleAddTodos = () => {
-        const data = {id: todosArray?.length + 1, title: todo.title, completed: false}
-        dispatch(addTodo( data))
+    const handleAddTodo = () => {
+        const data = {id: todoArray.length + 1, title: todo.title, complete: false}
+        dispatch(addTodo(data))
+        setTodo({})
     }
 
     const handleDelete = (id) => {
         dispatch(deleteTodo(id))
     }
 
-    const handleEdit = () => {
+    const handleEdit = (todo) => {
         dispatch(editTodo(todo))
-        setTodo({})
-
     }
 
+
+    console.log(todoArray)
     return (
-        <div className={'container d-flex flex-column pt-5 mt-5'}>
-            <div>
-                <input type="text"
-                       value={todo.title || ''}
-                       onChange={(e) => setTodo({...todo, title: e.target.value})}
-                       className={''}
+        <div className={'container pt-5 d-flex   flex-column justify-content-end'}>
+            <div className={'change-buttons '}>
+                <input  className={''}
+                        type="text"
+                        value={todo.title || ''}
+                        onChange={(e) => setTodo({...todo, title: e.target.value})}
                 />
-                <button className={'btn btn-primary'} onClick ={handleAddTodos}>Add</button>
+                <button onClick={handleAddTodo} className={'btn btn-primary'}>Add</button>
             </div>
+            <Edit />
             {
-                todosArray?.map(todo =>
-                    <div key={todo.id} style={{display: 'flex', gap:'10px', alignItems: 'center' }}>
-                        <h1>{todo.title}</h1>
-                        <input type="checkbox" checked={todo.completed}/>
-                        <button onClick={() => handleDelete(todo.id)} className={'btn btn-danger'}>Delete</button>
-                        <button onClick={() => handleEdit()} className={'btn btn-warning'}>Edit</button>
+                todoArray.map(todo =>
+                    <div key={todo.id} className={'todo-list'}>
+                        <h3>{todo.title}</h3>
+                            <input type="checkbox" checked={todo.complete}/>
+                            <button onClick={() => handleDelete(todo.id)} className={'btn btn-danger '}>Delete</button>
+                            <button onClick={() => handleEdit(todo)} className={'btn btn-warning'}>Edit</button>
                     </div>
                 )
             }
@@ -54,26 +55,20 @@ const App = () => {
 
 export default App;
 
-
-const todos =[
+const todos = [
     {
         id: 1,
-        title: 'Todo 1',
-        completed: false
+        title: 'Buy Milk',
+        complete: false
     },
     {
         id: 2,
-        title: 'Todo 2',
-        completed: false
+        title: 'Buy eggs',
+        complete: false
     },
     {
         id: 3,
-        title: 'Todo 3',
-        completed: false
+        title: 'Buy Milk',
+        complete: false
     },
-    {
-        id: 4,
-        title: 'Todo 4',
-        completed: false
-    }
 ]
